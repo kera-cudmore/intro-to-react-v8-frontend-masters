@@ -24,7 +24,7 @@ This repository holds my coursework and notes taken whilst completing the course
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/no-frills-react/pure-react)
 
-Creating our first Pure React Component
+#### Creating our first Pure React Component
 
 ``` javascript
 const App = () => {
@@ -64,10 +64,72 @@ Note that although this uses createElement, this time we are passing it a compon
 
 This will probably be the last time you write code using React.createElement etc, as React developers use JSX. However, JSX gets compiled down into JavaScript like shown above, so it is helpful to be able to understand how this works. It is also helpful to know for when createElement shows on stack tracing, as you will understand why its there.
 
-
 ### Components
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/no-frills-react/components)
+
+We can put the contents of our script into its own Javascript file called App.js and add that as the source in our script tags (note the capitalisation of App)
+
+We are then going to create a pet component in App.js
+
+``` JavaScript
+const Pet = () => {
+  return React.createElement("div", {}, [
+    React.createElement("h1", {}, "Bubba"),
+    React.createElement("h2", {}, "Dog"),
+    React.createElement("h2", {}, "English Bulldog"),
+  ])
+};
+```
+
+Note that for this component, we have passed it an array of child elements to render. As we've used an array in the pets component, we will also change it in the App component to use an array, as we are going to add three pet components there.
+
+When we add the Pet component into the App component 3 times, it displays the content of the Pet component three times. However this is not ideal, as in the real world we would want to be able to have a bit more flexibility of displaying different pets.
+
+React uses one way data flows - which means we can pass data from App down to Pet, but we can't pass data from Pet up to App. As we know that the parent App can affect the Children, but not the other way around, it makes it more straightforward when it comes to debugging. It also makes the data flow explicit, as if Pet has weird data being passed into it, you'll know that its source is the App, as the data flows from parent to child.
+
+So to pass properties from the parent to the child we will need to pass props as an argument into the Pet function, and then state the name of the props within the element, note that props are not strings:
+
+``` Javascript
+const Pet = (props) => {
+  return React.createElement("div", {}, [
+    React.createElement("h1", {}, props.name),
+    React.createElement("h2", {}, props.animal),
+    React.createElement("h2", {}, props.breed),
+  ])
+};
+```
+
+Then in App, we can pass the data we want to use to populate the props, note that this data is in strings, but we can also pass booleans, objects, urls etc:
+
+``` Javascript
+const App = () => {
+  return React.createElement(
+    "div",
+    {},
+    [
+    React.createElement("h1", {}, "Adopt Me!"),
+    React.createElement(Pet, {
+      animal: "Dog",
+      name: "Bubba",
+      breed: "English Bulldog"
+  }),
+    React.createElement(Pet, {
+      animal: "Dog",
+      name: "Spud",
+      breed: "Jack Russell"
+  }),
+    React.createElement(Pet, {
+      animal: "Dog",
+      name: "Shona",
+      breed: "Boxer"
+  }),
+    ]  
+    );
+};
+```
+
+🏁 [Project Checkpoint](https://github.com/btholt/citr-v8-project/tree/main/01-no-frills-react)
 
 ---
 
