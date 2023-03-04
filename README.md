@@ -139,9 +139,57 @@ const App = () => {
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/js-tools/npm)
 
+We can open and close a terminal within VSCode using the shortcut <kbd>control</kbd> + <kbd>backtick</kbd>
+
+Make sure your in the project folder that you want to run npm in and we can start a brand new npm project (this will allow us to keep track of our dependancies) with:
+
+```bash
+npm init -y
+```
+
+Note: the `-y` is added to prevent npm asking you a bunch of config questions, by using the `-y` it will just generate everything for you.
+
+There will now be a package.json file in the adopt_me folder, which is where all the dependencies will be stored (this is very common in projects that use node.js).
+
 ### Prettier
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/js-tools/prettier)
+
+To add an auto formatter called Prettier, which formats the code everytime you hit save, we need to run the following in the terminal:
+
+``` bash
+npm i -D prettier@2.7.1
+```
+Note: the `i` stands for install, which can also be written as `install`. The `-D` flag lets it know to put it in the developer dependencies, this can also be done with the flag `--save-dev`. 
+
+If you go into the package.json file now you can see that prettier is listed in the devDependencies section. Just before the version number is a  little `^` - which means if you go to install this again it will install a patch of that version if available, eg 2.7.2 - for the sake of this course we want to keep it as an exact version, so will remove the `^`, but normally you would leave it there.
+
+Our next step is to create a configuration object to allow us to use prettier. We do that by creating a new file in the root of the project called .prettierrc - within this folder we can configure prettier, for this project we will just use the default by adding an empty object to the file. If you had a preference for 2 or 4 spaces etc, this is the place to configure this.
+
+Next make sure you have the prettier extension installed, and then in the settings of VSCode enable the format on save, then look for prettier - make sure that prettier:enabled and prettier: require config are checked.
+
+When you create new projects, you will need to install prettier and create the .prettierrc file - but you won't have to configure any of the VSCode stuff.
+
+We can also leave commands in the scripts section of our package.json file so that others can use the tool the same way I am. This is configuring it for JavaScript, JSX, TypeScript and TSX.
+
+```json
+"scripts": {
+    "format": "prettier --write \"src/**/*.js, jsx, ts, tsx\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+
+`prettier` is the CLI command, which means it doesn't have to be installed, it will just find it in the node modules. `--write` means write it back to the file, so it will overwrite everything. We use the `\` to escape the double quote, this is done so prettier is passed the whole string of the path, otherwise bash will expand it for you - `"src/**/*.{js,jsx,ts,tsx}\"` this tells prettier to format everything inside of the source directory, no matter how deep, as long as it has the following file extensions: js, jsx, ts & tsx.
+
+You should now be able to run
+
+```bash
+npm run format
+```
+
+in the terminal and it will run the format script we just created, checking for JavaScript, JSX, TypeScript and TSX files in the scr folder and formatting any files that need it. It will list the files, and if they are grey it means nothing has changed in the file, if they are white it means changes were made.
+
+We can select prettier from the dropdown on the right of the terminal and select the output tab - this will show us a debug logout of things that it can't run on. If this is empty it can be a good indication that its not installed properly. Prettier also cannot deal with syntax errors, so for example if you added 3 ; - these would show in the problems tab of the terminal.
 
 ### EsLint
 
