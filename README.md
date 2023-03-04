@@ -1,8 +1,12 @@
 # Introduction to React
 
+![Banner](documentation/banner.png)
+
 Introduction to React V8 course at Frontend Masters taught by Brian Holt.
 
-This repository holds my coursework and notes taken whilst completing the above course.
+This repository holds my coursework and notes taken whilst completing the course.
+
+[Course Website](https://react-v8.holt.courses/)
 
 ---
 
@@ -19,6 +23,47 @@ This repository holds my coursework and notes taken whilst completing the above 
 ### Pure React
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/no-frills-react/pure-react)
+
+Creating our first Pure React Component
+
+``` javascript
+const App = () => {
+        return React.createElement(
+          "div",
+          {},
+          React.createElement("h1", {}, "Adopt Me!")
+        )
+      };
+```
+
+Components are always capitalised. This is required and becomes more important when we start using JSX. In this example our component is called App.
+
+The function will return the results of whatever the React.createElement does: 
+
+1. The element to create, in this example a div.
+2. An object with whatever attributes you want to assign to the element, such as a style tag or a class name, ID etc. There has to be something passed here, so you can also use an empty object, or null (which essentially mean the same thing to React). 
+3. The children of the element, so this will go inside the div. In this example we have a h1, with no attributes and the raw text adopt me.
+
+`createElement` = creates new HTML tags
+
+So now we have our function, we need to instantiate it, so it shows in the browser:
+
+``` javascript
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container);
+root.render(React.createElement(App));
+```
+
+First we create a container to place our component, in this example, we are using the div with the ID of root as the container for our component. This could be called anything, but typically it is called root.
+
+We then need to create the root, which we pass the container to. (In older versions of React this would be done with `ReactDOM.render(container, <App />);` - this can still be found if you are using an older version of React, but has been replaced by the new, better `createRoot` in React 18.)
+
+Finally we use createElement to render the App in the root - attributes and children can also be added here after the App, however as we don't have any we can just omit them here.
+
+Note that although this uses createElement, this time we are passing it a component rather than a string. If you gave it text in a string, it would render that as the tag name. If you give it a component, it will render that component out.
+
+This will probably be the last time you write code using React.createElement etc, as React developers use JSX. However, JSX gets compiled down into JavaScript like shown above, so it is helpful to be able to understand how this works. It is also helpful to know for when createElement shows on stack tracing, as you will understand why its there.
+
 
 ### Components
 
