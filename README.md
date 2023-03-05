@@ -139,6 +139,10 @@ const App = () => {
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/js-tools/npm)
 
+npm stands for node package manager and requires node.js to be installed on your computer in order to be able to use it. It is the worlds largest software registry and is free to use without any registration or login, which makes it a very popular choice for open source developers who use it to share software.
+
+All npm packages installed will be defined in the package.json file, which is written in JSON. It is very similar to a requirements.txt file, which stores the package name and its version.
+
 We can open and close a terminal within VSCode using the shortcut <kbd>control</kbd> + <kbd>backtick</kbd>
 
 Make sure your in the project folder that you want to run npm in and we can start a brand new npm project (this will allow us to keep track of our dependancies) with:
