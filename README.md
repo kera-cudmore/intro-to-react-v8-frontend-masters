@@ -284,6 +284,54 @@ To install we run the following:
 npm i -D vite@3.1.4 @vitejs/plugin-react@2.1.0
 ```
 
+Back in our index.html file we are now going to delete the 2 React scripts, as we are going to be bundling React into our project. We will also need to change our script that points to App.js to be App.jsx as we will be using JSX add then add `type="module"` to our script tag. This is so Vite knows we aren't using common JS, we are using ES6 modules.
+
+Some React developers don't use the jsx file extension, and just use js - however as we are using Vite, it requires that files have the jsx extension otherwise it won't perform the jsx translation.
+
+To configure Vite, we will need to create a vite.config.js file in the root of our project, and this is what will define our build process:
+
+```javascript
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  root: "src",
+});
+```
+
+Note: If the index.html file is in the root of the project you don't need the `root: "src" line.
+
+This build process will then go into the src directory (which is listed as the root), it finds the index.html file and then it finds the App.jsx file and will crawl the graph from there. It will understand your JS and CSS.
+
+If you had different heads (index.html is the head file that it will crawl out of), you can identify that to Vite within the config file and it will go find that file.
+
+As we deleted the React script tags in our index.hmtl we will need to install React to allow it to build correctly:
+
+```bash
+npm i react@18.2.0 react-dom18.2.0
+```
+
+Note: we are installing React and ReactDom without the `-D` flag, this is because React is a production dependancy rather than a developer dependancy.
+
+Vite has something called tree shaking, which is another word for live code inclusion - this means that it only includes code that is being actively used. Dead code elimination is where it goes in and sees if there is any code it can eliminate that is never called. Live code inclusion is in most cases the better of the two.
+
+so rather than using `import ReactDOM from "react-dom";` we could tell it to only import what we are using: `import { createRoot } from "react-dom";` this would make the bundle smaller as its only including what is used. The curly braces are indicating that we are only using part of the package.
+
+Now we are going to add some more scripts in our package.json file:
+
+```json
+"dev": "vite",
+"build": "vite build",
+"preview": "vite preview",
+```
+
+Dev will start our development server, build will get ready for production and build the project to static files (this is what you would run in CI), and finally preview will allow us to see the production build before we go to production.
+
+We can now run our script `npm run dev` and it will give us a message letting us know what Local is (which we can <kbd>command</kbd> + click on) and this will open the project in the browser. Note that the port for Vite is always localhost:5173.
+
+🏁 [Project Checkpoint](https://github.com/btholt/citr-v8-project/tree/main/02-js-tools)
+
 ## Core React Concepts
 
 ### JSX
