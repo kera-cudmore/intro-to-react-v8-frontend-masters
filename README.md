@@ -338,6 +338,16 @@ We can now run our script `npm run dev` and it will give us a message letting us
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/jsx)
 
+Up to now, we have been writing JavaScript that imitates the html that we want to output - so we are having to think of what we want as a finished product, translate that into JavaScript, which is then be translated back into html at the end. JSX is the tool that allows us to just write what it is we want and it performs the multiple hops to get there.
+
+In Pet.jsx I have replaced the original Pet component that was creating html using JavaScript with the JSX equivalent. The JSX is easier to read due to it using actual HMTL tags and we simply pass our props within the tags.
+
+In Pet.jsx we use `export default Pet;` - the default means the top level, so in this case, Pet. We can also declare things with const - and this would require the curly braces to import.
+
+In App.jsx we can remove the import React, as due to this being a jsx file we don't need to import it. When we are calling the Pet component, JSX is able to tell that this is a component rather than a string to render because of the capitalised name. We can then pass in the props to the component. 
+
+It is optional with self-closing tags in html if we close them with the trailing slash `/>`, however this is required in JSX.
+
 ### Hooks
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/hooks)
