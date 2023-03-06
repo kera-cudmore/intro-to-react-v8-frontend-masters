@@ -199,15 +199,90 @@ We can select prettier from the dropdown on the right of the terminal and select
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/js-tools/eslint)
 
+Eslint is an open source project that helps to find and fix simple problems in your JavaScript code.
+
+We can install eslint using npm by running the following command in the terminal:
+
+```bash
+npm i -D eslint@8.24.0 eslint-config-prettier@8.5.0
+```
+
+We will then need to create a file called .eslintrc.json - this is where we will set up the config for eslint. 
+
+```json
+{
+    "extends": [
+        "eslint:recommended",
+        "prettier"
+    ],
+    "plugins": [],
+    "parserOptions":{
+        "ecmaVersion": 2022,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    }
+}
+```
+
+In the extends array we are adding `eslint:recommended` as this will flag any issues that would be raised by esline, and these are issues that should definately be addressed. 
+
+We are also adding `prettier` in the extends array - this doesn't add anything, its just removes formatting stuff from eslint, as we are telling it we are using prettier for the formatting. It's important that prettier always comes last in the array.
+
+Next we have an array for plugins - this will currently be empty. 
+
+Next we will add some parserOptions, we are telling it we which `ecmaVersion` to use - we want the 2022 version of javaScript, the `sourceType` is saying to use modules for imports and exports. As we are going to be using JSX, we include that in the `ecmaFeatures` so it accounts for that. We include the `browser` and `node` as true to prevent any errors relating to them causing an issue, by telling it what kind of environments its going to be working in and what kind of Globals are available.
+
+We will now need to make sure we have the ESLint extension installed in VSCode. Note that you may need to restart VSCode to get it to work.
+
+Finally we can add it into our package.json file, to allow others to run the same thing:
+
+```json
+"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
+```
+
+This is the same as the format key with the file path - and the `--quiet` part is to prevent it alerting to every little thing, we want it to just let us know when there are problems.
+
+A nice trick we can use when debugging is we can run the following:
+
+```bash
+npm run lint -- --debug
+```
+
+So we are telling it to run our lint script, the `--` means that we don't want to perform this with npm, but rather eslint, which is the underlying command, followed by the `--debug` flag. This will show you what it loaded, how it loaded it etc. In a few cases it will be able to fix an issue - you can perform this using `--fix`.
+
 ### Git
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/js-tools/git)
+
+We are going to create a .gitignore file, which tells git what files to ignore, so these won't be pushed to our repo. We will need to include the following:
+
+```
+node_modules/
+dist/
+.env
+.DS_Store
+coverage/
+.vscode/
+```
 
 ### Vite
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/js-tools/vite)
 
----
+Vite is what we will be using as our build tool. Other tools that do the same thing include parcel and webpack. Vite was created by Rich Harris, who also created Svelte.
+
+To install we run the following:
+
+```bash
+npm i -D vite@3.1.4 @vitejs/plugin-react@2.1.0
+```
 
 ## Core React Concepts
 
