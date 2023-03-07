@@ -129,7 +129,7 @@ const App = () => {
 };
 ```
 
-🏁 [Project Checkpoint](https://github.com/btholt/citr-v8-project/tree/main/01-no-frills-react)
+🏁 [Project Checkpoint 1](https://github.com/btholt/citr-v8-project/tree/main/01-no-frills-react)
 
 ---
 
@@ -330,7 +330,7 @@ Dev will start our development server, build will get ready for production and b
 
 We can now run our script `npm run dev` and it will give us a message letting us know what Local is (which we can <kbd>command</kbd> + click on) and this will open the project in the browser. Note that the port for Vite is always localhost:5173.
 
-🏁 [Project Checkpoint](https://github.com/btholt/citr-v8-project/tree/main/02-js-tools)
+🏁 [Project Checkpoint 2](https://github.com/btholt/citr-v8-project/tree/main/02-js-tools)
 
 ## Core React Concepts
 
@@ -348,9 +348,67 @@ In App.jsx we can remove the import React, as due to this being a jsx file we do
 
 It is optional with self-closing tags in html if we close them with the trailing slash `/>`, however this is required in JSX.
 
+We are now getting errors in our App.js file telling us that App and Pet are declared but aren't being used - this is because eslint doesn't currently understand JSX and so we need to configure this:
+
+```bash
+npm install -D eslint-plugin-import@2.26.0 eslint-plugin-jsx-a11y@6.6.1 eslint-plugin-react@7.31.8
+```
+
+and then add the following to the .eslintrc.json file under extends (remember  that the order doesn't matter, we just need to make sure that prettier comes last):
+
+```json
+"plugin:import/errors",
+"plugin:react/recommended",
+"plugin:jsx-a11y/recommended",
+```
+
+These plugins just augment eslint, by adding additional capabilities to eslint. These are standard recommended things that should always be followed. 
+
+We will now need to create a new key called rules underneath extends and add the following: 
+
+```json
+"rules": {
+        "react/prop-types": 0,
+        "react/react-in-jsx-scope": 0
+    },
+```
+
+This is saying don't use prop types as we'll be using typescript, and its also saying that we want to ignore the react in jsx scope rule which required react to be imported to use jsx - by giving these a value of 0 we are saying to ignore these rules (1 means warn, and 2 means error).
+
+For the plugins section, we will add the following:
+
+```json
+    "plugins": ["react", "import", "jsx-a11y"],
+
+```
+
+This is saying that we have a React plugin, an import plugin - which allows eslint to follow imports, for example when we export something from one file but import something different into another file, it will follow the export->import and find the error that they don't match. JSX-a11y works making sure things are accessible in your code and pointing them out if not - for example if you put a click listener on something not clickable, this plugin will let you know its not accessible.
+
+Finally we need to add one more new key at the bottom called settings:
+
+```json
+"settings": {
+        "react": {
+            "version": "detect"
+        },
+        "import/resolver": {
+            "node":
+            {
+                "extensions": [".js", ".jsx"]
+            }
+        }
+    }
+```
+
+Eslint will want to know what version of React we're using, so we tell it to go and detect this itself by reading the package.json file. We also need to let it know that when importing we want it to look at .jsx files as well as .js files.
+
+🏁 [Project Checkpoint 3](https://github.com/btholt/citr-v8-project/tree/main/03-jsx)
+
 ### Hooks
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/hooks)
+
+
 
 ### Effects
 
