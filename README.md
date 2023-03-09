@@ -408,7 +408,97 @@ Eslint will want to know what version of React we're using, so we tell it to go 
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/hooks)
 
+The SearchParams component is going to use an API that has been created and is hosted by Frontend Mentors so that it should always be available.
 
+When writing our searchParams return function, we are using parentheses so that we can write on the next line, if we just hit enter and started writing on the next line this wouldn't work as it would think that the return had ended, so we need the parentheses to let JavaScript know we're going to the next line.
+
+There are a number of words that are reserved in JavaScript that we cannot use as we normally would - for example class or for. If we wanted to add a class to the div, we would need to use className, and if we wanted to use for in a label we would need to use htmlFor.
+
+```jsx
+const SearchParams = () => {
+    const location = "Orlando, FL";
+    return (
+        <div className="search-params">
+            <form>
+                <label htmlFor="location">
+                    Location
+                    <input id="location" value={location} placeholder="Location" />
+                </label>
+                <button>Submit</button>
+            </form>
+        </div>
+    )
+}
+
+export default SearchParams;
+```
+
+In the input we are using curly braces for the value attributes value - this is because if we used quotation marks around it, this would make it a string and it would use the value inside as a string. By using the curly braces, we are saying use the value of the variable location. This variable is known as a JavaScript expression, and anything that could be an expression can be written within the curly braces - so for example we could also add `.toUpperCase()` within the curly braces and it would use the value of the variable location and change it to be uppercase.
+
+We are now going to import this component into our App.js file. First, remove the pet import and add the SearchParams import, then remove all the Pet components and add the SearchParams component.
+
+```jsx
+import { createRoot } from 'react-dom/client';
+import SearchParams from "./SearchParams";
+
+const App = () => {
+  return (
+    <div>
+      <h1>Adopt Me!</h1>
+      <SearchParams />
+    </div>
+  )};
+
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<App />);
+```
+
+NOTE: We have updated the reactDOM import to now include client: `import { createRoot } from "react-dom/client` and we will also need to add a return in the app function to be able to view the SearchParam component, otherwise this would be being declared but never used.
+
+So how does React work, and know when to re-render? The SearchParams component in SearchParams.jsx works is that it will continually re-render this a bunch of times. The re-render functions are run a lot, so need to be fairly fast. Every time an event happens in JavaScript it will re-render everything from top to bottom. So if we type in the input and click a button and a top level DOM event happens - React will say the user has done something so something has probably changed and will re-render itself.
+
+In our code however, we can type whatever we want into the input and nothing will ever change, because nothing is changing the location. If you look in the console, it is telling you what the issue is, and that is that there is no onchange handler - React is telling us that this is the issue.
+
+To enable the location value to change, we will need to use something called a hook. There are numerous different hooks in React (you can find out about each of them in the [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)) but for the location we are going to be looking at `useState`.
+
+We will first need to import the hook, then we will need to change our location variable to be an array that holds the name of the variable, and then the setLocation, we then tell the variable that we want the value to useState with the default to display in the brackets, in our example, we are using an empty string as we don't want to have a value.
+
+Now in our input we will need to add an onChange which will take in an event and will then use setLocation which will be the event targets value (so the value of the input in this example)
+
+We are calling the setLocation function to let React know that something has changed and it needs to update itself.
+
+```jsx
+import { useState } from 'react';
+
+const SearchParams = () => {
+    const [location, setLocation] = useState("");
+    return (
+        <div className="search-params">
+            <form>
+                <label htmlFor="location">
+                    Location
+                    <input
+                      onChange={e => setLocation(e.target.value)}
+                      id="location"
+                      value={location}
+                      placeholder="Location"
+                    />
+                </label>
+                <button>Submit</button>
+            </form>
+        </div>
+    )
+}
+
+export default SearchParams;
+```
+
+This will now allow us to be able to update the text in the input. When our render functions we need to make sure its fast and stateless (stateless means they're not modifying global variables)
+
+So the way to use state inside of the function is to use the hooks, and the hooks are passed to React and then React gives them back to you. In our example location gives you a piece of state which we are keeping track of internally to a React application, and which can change when the user updates the form.
+
+Important! Hooks have to be called every single time in the same order - so they won't work with if's or for loops, as that will change the order that things are called in, which could result in you getting your state back out of order.
 
 ### Effects
 
