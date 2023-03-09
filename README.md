@@ -408,6 +408,8 @@ Eslint will want to know what version of React we're using, so we tell it to go 
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/hooks)
 
+By convention all hooks start with use. The examples we are using are function components with hooks. This is the newer way to use hooks in React.
+
 The SearchParams component is going to use an API that has been created and is hosted by Frontend Mentors so that it should always be available.
 
 When writing our searchParams return function, we are using parentheses so that we can write on the next line, if we just hit enter and started writing on the next line this wouldn't work as it would think that the return had ended, so we need the parentheses to let JavaScript know we're going to the next line.
@@ -462,7 +464,7 @@ In our code however, we can type whatever we want into the input and nothing wil
 
 To enable the location value to change, we will need to use something called a hook. There are numerous different hooks in React (you can find out about each of them in the [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)) but for the location we are going to be looking at `useState`.
 
-We will first need to import the hook, then we will need to change our location variable to be an array that holds the name of the variable, and then the setLocation, we then tell the variable that we want the value to useState with the default to display in the brackets, in our example, we are using an empty string as we don't want to have a value.
+We will first need to import the hook, then we will need to change our location variable to be an array that holds the name of the variable, and then the setLocation, which is the function that we call to update the location. We then tell the variable that we want the value to useState with the default to display in the brackets, in our example, we are using an empty string as we don't want to have a value. This is only displayed the first time the component runs, every time after that it'll be ignored.
 
 Now in our input we will need to add an onChange which will take in an event and will then use setLocation which will be the event targets value (so the value of the input in this example)
 
@@ -499,6 +501,18 @@ This will now allow us to be able to update the text in the input. When our rend
 So the way to use state inside of the function is to use the hooks, and the hooks are passed to React and then React gives them back to you. In our example location gives you a piece of state which we are keeping track of internally to a React application, and which can change when the user updates the form.
 
 Important! Hooks have to be called every single time in the same order - so they won't work with if's or for loops, as that will change the order that things are called in, which could result in you getting your state back out of order.
+
+As we are now using hooks there is one more eslint rule we will want. In the terminal run:
+
+```bash
+npm i -D eslint-plugin-react-hooks@4.6.0
+```
+
+This is an official eslint tool from the React team that ensures you are using hooks in the correct way. We will then need to also add to our .eslintrc.json file the following just above prettier:
+
+```json
+"plugin:react-hooks/recommended",
+```
 
 ### Effects
 
