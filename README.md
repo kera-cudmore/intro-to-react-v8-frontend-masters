@@ -514,6 +514,44 @@ This is an official eslint tool from the React team that ensures you are using h
 "plugin:react-hooks/recommended",
 ```
 
+This plugin will catch the weird rules that hooks have, like not using within an if or for loop and will warn you that you're using it incorrectly.
+
+
+Map is used a lot in React, as it allows us to take an array and return it as another array of something else - so in our example we are taking an array of animals and then mapping it into an array of options using those animals. This gives us an array of React components which React knows how to render.
+
+```jsx
+<label htmlFor="animal">
+  Animal
+  <select
+    id="animal"
+    value={animal}
+    onChange={e => {setAnimal(e.target.value)}}
+  >    
+    <option />
+    {ANIMALS.map((animal) => (
+      <option key="{animal}">{animal}</option>
+    ))}
+  </select>
+</label>
+```
+
+If we wanted to make the select dropdown disabled if there are no breeds to select, we can add the following:
+
+```jsx
+disabled={breeds.length === 0}
+```
+
+This uses a triple equals to see if the length of the breeds array is equal to 0 (empty) and if it is it will disable the select.
+
+We can also add the following to the animal onChange, so that it clears the breed selection if a different animal is chosen:
+
+```jsx
+setBreed("");
+```
+
+🏁 [Project Checkpoint 4](https://github.com/btholt/citr-v8-project/tree/main/04-hooks)
+
+
 ### Effects
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/effects)
