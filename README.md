@@ -551,10 +551,49 @@ setBreed("");
 
 🏁 [Project Checkpoint 4](https://github.com/btholt/citr-v8-project/tree/main/04-hooks)
 
-
 ### Effects
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/effects)
+
+An effect is something that is going to happen outside of your component, so within our component we have location, animal and breed, so once we have those and when the user clicks on the submit button we want to make a request to the API for a new list of pets to allow the user to see what they've searched for. So the effect is basically saying go and retrieve this from some other place, or go and do something outside of the life cycle of my component. Typically this would be an API request, but it could also be a request to get something from local storage or another location, or post this information to an API or storage.
+
+We will need to set another useState for pets, this will be an empty array that we retrieve from the API. We will then create a useEffect with a requestPet function (so we will also need to import useEffect from React at the top of our file) and then call the function below:
+
+```jsx
+useEffect(() => {
+  requestPets();
+});
+
+async function requestPets() {
+  const res = await fetch(
+    `https://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+  );
+
+  const json = await res.json();
+
+  setPets(json.pets);
+  }
+```
+
+Note the use of JavaScript template strings, using the backticks - which allows us to inject the animal, location and breed into the url for the API call. We are then going to save the results of that API request in a variable called json and then assign Pets the pets results of the json.
+
+When we render our Pets, we will need to give it a key, otherwise React will complain. This key can also be used if we wanted to change the order of things such as sorting by breed rather than animal. We would have the same group of elements in the array, but would be ordering them differently. All React knows is that the array changed, but not how it changed, and so would destroy everything in that render tree and re-render it all from scratch. It would be better if it could recognise that we have the same things, just in a different order, so rather than destroying everything and re-rendering it we can just swap them. This is where we can use key, by giving it something unique per object in the array (in our example each pet has an id) it will be able to figure it out on its own due to the key being a unique thing that stays the same.
+
+
+Effects run every single time you re-render the application by default, so in our example - every single time we type it will re-render, which is not what we want, we can it to only re-render on submit events. We can do this by giving it an array of dependancies. The array will tell it when to run again - so if we give the array nothing it will only request once at the beginning and then not again. The only time after the initial render that we want to call requestPets is when we submit.
+
+```jsx
+useEffect(() => {
+  requestPets();
+}, [animal, location]);
+```
+
+If we wanted this to re-search when we change the parameters, we will need to pass in the location and animal to the dependencies array. We will leave the array empty, as we only want this to render once - this will show a warning as it would rather you put requestPets into the array, however this is not what we want as we want to only call on submit. So to do that we will add an onSubmit to our form, and to get rid of the warning we can add a comment to that line `// eslint-disable-line react-hooks/exhaustive-deps` - adding this comment makes it clear that we are choosing to ignore this warning as its not what we wanted to do with our code.
+
+This example shows the best practice way of using an API with a form.
+
+🏁 [Project Checkpoint 5](https://github.com/btholt/citr-v8-project/tree/main/05-useeffect)
+
 
 ### Custom Hooks
 
