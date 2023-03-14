@@ -599,6 +599,84 @@ This example shows the best practice way of using an API with a form.
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/custom-hooks)
 
+What we have created is a controlled form, which is using React to precisely control this form. This isn't best practice, but is helpful to know how to do, as it is a good way of understanding how state works.
+
+Now we are going to build a custom hook to allow us to select an animal and then see the breeds for that animal - so for example if we select bird, we want to see breed options such as macaw, budgie, raven etc. Custom hooks are basically other hooks packaged together. In our example we are packaging up a number of useState and useEffect hooks so that we can just call our one hook, useBreedList, rather than having to call numerous things.
+
+We first need to create a new file in our scr folder called useBreedList - this can be a js or jsx file extension, either will work. I have chosen to go with js as this file has no jsx code. We will need to import useState and useEffect from React, and we will declare a variable localCache which will be an empty object.
+
+```javascript
+import { useState, useEffect } from "react";
+
+const localCache = {};
+```
+
+Next we will write our function useBreedList - and we will want to put the export details at the front of this as we will be importing this in our SearchParams file. We will pass animal to our function. Now we are going to define our breedList and status. Our breedList will take in an animal, and then will serve the breed list from the cache when called again. Status allows us to show different loading states - by default its unloaded.
+
+```javascript
+export default function useBreedList(animal) {
+
+  const [breedList, setBreedList] = useState([]);
+  const [status, setStatus] = useState("unloaded");
+```
+
+After defining breedList and status, we can start working on our useEffect.
+
+```javascript
+useEffect(() => {
+    // If animal is not selected - breed list should be empty array
+    if (!animal) {
+      setBreedList([]);
+      // If animal has been stored in local cache, use local cache to display breed list
+    } else if (localCache[animal]) {
+      setBreedList(localCache[animal]);
+      // If animal is selected but not in local cache, request the breed list
+    } else {
+      requestBreedList();
+    }
+
+    async function requestBreedList() {
+      setBreedList([]);
+      setStatus("loading");
+
+      const res = await fetch(
+        `https://pets-v2.dev-apis.com/breeds?animal=${animal}`
+      );
+      const json = await res.json();
+      localCache[animal] = json.breeds || [];
+      setBreedList(localCache[animal]);
+      setStatus("loaded");
+    }
+  }, [animal]);
+
+  return [breedList, status];
+}
+```
+
+First we will state if the breedList is empty or null, use an empty array for the breedList - this will make the breeds dropdown empty. Else if the animal is already stored in the local cache, we will say to use the local cache to display the breedList. Else, request the breedList from the API. Below the if block we will then create a function to request the breedList - this will set the breedList as an empty array and will change the status to loading. It will then declare a variable res to fetch the breedList from the API, the variable json will store the json results from the API call and we will then tell the local cache to store the json.breeds or an empty array. We then call the function with the animal stored in local cache and change the status to loaded.
+
+Outside of the useEffect we pass the animal, and finally we return the breedList and status.
+
+Finally, we will need to import our useBreedList into our SearchParams file and then declare breeds.
+
+```jsx
+import { useState, useEffect } from "react";
+import Pet from "./Pet";
+import useBreedList from "./useBreedList";
+const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+
+const SearchParams = () => {
+  const [location, setLocation] = useState("");
+  const [animal, setAnimal] = useState("");
+  const [breed, setBreed] = useState("");
+  const [pets, setPets] = useState([]);
+  const [breeds] = useBreedList(animal);
+```
+
+Note: We have status in our SearchParams, but aren't actually using it - so why bother? The reason for this is to make it easy for us to do testing. So if we create custom hooks that are doing something that you have to wait on, it is a good idea to add a status that tracks as this will make it a lot easier to test later. We will cover testing in the [intermediate section: testing](#testing).
+
+🏁 [Project Checkpoint 6](https://github.com/btholt/citr-v8-project/tree/main/06-custom-hooks)
+
 ### Handling User Input
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/handling-user-input)
