@@ -728,6 +728,8 @@ Here we are importing Pet, then creating a new results function and are passing 
 
 We will then need to go back to our SearchParams file and import the Results file, we can remove the pet import as we are no longer using it directly in this file (as its being imported in the Results file) and where we had the pets.map under the closing form tag, we can call the Results component and pass it pets.
 
+🏁 [Project Checkpoint 7](https://github.com/btholt/citr-v8-project/tree/main/07-component-composition)
+
 ### React Dev Tools
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/react-dev-tools)
