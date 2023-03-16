@@ -687,10 +687,46 @@ Just like in JavaScript, there are a bunch of different ways we can handle user 
 
 Note: In most cases this won't matter (but there is always an exception!) but the event, `e`, that we are passing into our onSubmit function, is not a real DOM event, but rather a React synthetic event. It has the exact same API's as a normal DOM event, but is a fake DOM event. This is usually something that may become an issue with TypeScript, due to its pickiness about the kind of event.
 
-
 ### Component Composition
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/component-composition)
+
+So when is it time to create a component out of a piece of code? 
+
+We should pull the code and make it its own component include when something should be indivually testable, individually usable, or even when something is getting too big (for example in the SearchParams, the file is around 90 lines, which is pretty long for a React component) - smaller, single purpose components are easier to read and understand and is better practice. Think also whether an item could be reusable, such as on a results page or in an admin section etc - if it can be resued then it makes a good candidate for becoming a reusable component.
+
+A good example in our code is where we are rendering a list of pets, so we are going to take out this piece of code and create a component with it.
+
+```jsx
+import Pet from "./Pet";
+
+const Results = ({ pets }) => {
+  return (
+    <div className="search">
+      {!pets.length ? (
+        <h1>No Pets Found</h1>
+      ) : (
+        pets.map((pet) => (
+          <Pet
+            animal={pet.animal}
+            name={pet.name}
+            breed={pet.breed}
+            images={pet.images}
+            location={`${pet.city}, ${pet.state}`}
+            key={pet.id}
+          />
+        ))
+      )}
+    </div>
+  );
+};
+
+export default Results;
+```
+
+Here we are importing Pet, then creating a new results function and are passing this pets. We will then use a ternary to say if the pets array is 0 length display the heading no pets, otherwise if there are pets, we want to perform the pets.map. We will then implicitly tell it the values. Some people will use the spread operator, however this is not great practice, as it can become difficult to tell where something came from, and is also not acceptable in TypeScript, it must be done as above, so it is better to get into good habits from the start 😊
+
+We will then need to go back to our SearchParams file and import the Results file, we can remove the pet import as we are no longer using it directly in this file (as its being imported in the Results file) and where we had the pets.map under the closing form tag, we can call the Results component and pass it pets.
 
 ### React Dev Tools
 
