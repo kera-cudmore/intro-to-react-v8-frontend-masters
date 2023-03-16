@@ -734,6 +734,35 @@ We will then need to go back to our SearchParams file and import the Results fil
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/react-dev-tools)
 
+
+Right now, we're doing React development in development mode, which means we can see nice errors in the console that are descriptive about what we're doing and give us hints on a better way of doing things and maybe a link to that.
+
+The development mode of React is 4 times bigger than the normal production package so its very important to not ship the development mode of React to production, because of its size and slowness.
+
+Vite and parcel handle this for you automatically, but the way you would change that if your using webpack for example, you need to care about what the NODE_ENV is set to. If it is set to development, you would be shipping the development version of React. If it is set to production (or anything else) you'll get the smaller packaged production version.
+
+If you have an error in the production version, you will get a message telling you theres and error and to search the error on google - but it won't give you any useful error messages.
+
+React also has something called strict mode. Strict mode will give you warnings about upcoming updates to React that could cause issues - so for example it could tell you something you're doing now is fine, but that it won't work in a later version.
+
+This course is not going to use strict mode, as it basically tells your app to render twice to make sure you don't have any side effects that are not happening consistantly. If you did want to use strict mode you simple wrap your App in the following:
+
+```jsx
+<StrictMode>
+
+</StrictMode>
+```
+
+This won't slow your App down, or ship anything extra to production as it only works within development mode.
+
+React also has its own dev tools - you can search the chrome store for React Developer Tools and click the add to chrome button.
+
+The React dev tools have options called components and profiler which are like explorers for you to use dev tools. Using the components you can see all the Apps, you can click on the Apps and see the state, you can also modify the state from within the dev tools and it will update on the page. You can see the props being passed in (these can't be amended as they are read-only). It can also tell you the source and the render path.
+
+The profiler option allows you to refresh the page and then stop it, which will give you a breakdown of what took a long time to render, a timeline, rankings etc. This is great for taking a deeper dive into the performance of your application.
+
+The React developer tools are a very important part of React development and you will use these extensively.
+
 ---
 
 ## React Capabilities
