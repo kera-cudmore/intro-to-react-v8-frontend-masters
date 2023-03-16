@@ -681,6 +681,13 @@ Note: We have status in our SearchParams, but aren't actually using it - so why 
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/handling-user-input)
 
+Within our form tag we are calling the onSubmit function, which takes in an event - we are telling the form preventDefault - this means we want to prevent the default action, which is the form submitting - and then we call the requestPets function.
+
+Just like in JavaScript, there are a bunch of different ways we can handle user interactions, like mouseover, keyup etc - take a look at the [React documentation here](https://reactjs.org/docs/events.html#supported-events) for more information on the different events supported in React.
+
+Note: In most cases this won't matter (but there is always an exception!) but the event, `e`, that we are passing into our onSubmit function, is not a real DOM event, but rather a React synthetic event. It has the exact same API's as a normal DOM event, but is a fake DOM event. This is usually something that may become an issue with TypeScript, due to its pickiness about the kind of event.
+
+
 ### Component Composition
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/core-react-concepts/component-composition)
