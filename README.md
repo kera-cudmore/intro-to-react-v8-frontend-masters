@@ -16,6 +16,10 @@ This repository holds my coursework and notes taken whilst completing the course
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/welcome/intro)
 
+React apps are made out of components. A component is a piece of the UI (user interface) that has its own logic and appearance. A component can be as small as a button, or as large as an entire page.
+
+React components are JavaScript functions that return markup, and once declared can be nested inside other components.
+
 ---
 
 ## No Frills React
@@ -771,7 +775,7 @@ The React developer tools are a very important part of React development and you
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/react-router)
 
-React router (we'll be using v6) is one of the most popular client side routers for React.
+React router (we'll be using v6) is one of the most popular client side routers for React. React Router is superior to other routers as it is very accessibility focused, and takes great care in getting their accessibility right.
 
 We are now going to create an additional page for our app, so we will create the Details.jsx file and will need to import an external library:
 
@@ -820,6 +824,17 @@ and changing our anchor tags to be Link tags. We can still give Links a classNam
 ```
 
 The reason we are adding this is it would be better for React router dom to capture the event and route without forcing the user to totally refresh the page, which is what was happening previously when we used anchor tags.This now won't be a full page refresh when routing to the details page, it'll all be captured on the client side, which is a better way of working.
+
+If we want to get the id out of the path we can use `useParams`, which is a hook (remember hooks have use at the beginning). We will need to import useParams into the top of the Details.jsx file and then we can add the following inside Details:
+
+```jsx
+const { id } = useParams();
+return <h2>{id}</h2>;
+```
+
+If we check the app, we will now see the id for whichever pet we click on, on the details page. The way this works is because of content. We have wrapped our entire application in App.jsx with BrowserRouter, and that allows context to be available to the components underneath it. We can then call useParams in the Details component, because we can pull the id from the context created in the App.jsx BrowserRouter component. useParams won't work unless there is a BrowserRouter to provide it with the information. You should also be able to see this in the dev tools under the components tab.
+
+We will now also import Link in App.jsx as we want to add a link back to home at the top of the page. We will create a header which contains a link to home, and include the text Adopt Me! When users click on this link, they will be returned to the home page.
 
 ### react-query
 
