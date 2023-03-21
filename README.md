@@ -771,6 +771,56 @@ The React developer tools are a very important part of React development and you
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/react-router)
 
+React router (we'll be using v6) is one of the most popular client side routers for React.
+
+We are now going to create an additional page for our app, so we will create the Details.jsx file and will need to import an external library:
+
+```bash
+npm i react-router-dom@6.4.1
+```
+
+Note: for this install we didn't use the `-D` flag. This is because this package is a production dependancy.
+
+Once we have installed the router, we will want to import React Router Dom elements in our App.jsx file underneath our createRoot import and also Details:
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Details from "./Details";
+```
+
+We will then delete SearchParams and the div in our App, and instead wrap the whole thing in `<BrowserRouter>`. Whatever you wrap with BrowserRouter, is where BrowserRouter is going to be available for use. Inside the `<BrowserRouter>` we are going to add `<Routes>` tags and then nested within that some `<Route>` tags which will point to our pages.
+
+```jsx
+ <BrowserRouter>
+      <h1>Adopt Me!</h1>
+      <Routes>
+        <Route path="/details/:id" element={<Details />} />
+        <Route path="/" element={<SearchParams />} />
+      </Routes>
+    </BrowserRouter>
+```
+
+We will also need to add `id={pet.id}` in our Pet component in results.
+
+In the route we have the `:id` which is a variable that is used when creating the path, and allows us to access the id within the details page.
+
+Another type of Router is HashRouter - this would change the path from /details/2 to /#details/2. Generally you should avoid using this if possible, however a use case for it could be if you are using Django, where the server can be inflexible as to what kind of routes you can add. You wouldn't be able to add BrowserRoutes for every variation of route as the server wouldn't be able to handle that. Using HashRoute in this case would allow you to define one route, and everything would go through this route.
+
+Another type is StaticRouter - this is used for server side rendering of React apps and Node - we will cover this a bit later on.
+
+So our routing is now working, as we can click a pet and be taken to the correct path using their id, however there is a better way of achieving this within the Pet.jsx file, and that is by adding the following import to the top of the file:
+
+```jsx
+import { Link } from 'react-router-dom';
+```
+and changing our anchor tags to be Link tags. We can still give Links a className, but we will  need to amend the `href` to `to`:
+
+```jsx
+<Link to={`/details/${id}`} className="pet">
+```
+
+The reason we are adding this is it would be better for React router dom to capture the event and route without forcing the user to totally refresh the page, which is what was happening previously when we used anchor tags.This now won't be a full page refresh when routing to the details page, it'll all be captured on the client side, which is a better way of working.
+
 ### react-query
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/react-query)
