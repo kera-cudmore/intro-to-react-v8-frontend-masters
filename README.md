@@ -840,6 +840,50 @@ We will now also import Link in App.jsx as we want to add a link back to home at
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/react-query)
 
+React Query makes handling data much easier - up to now we had been passing the breedlist to the cache and were checking the cache to see if the data was there. React Query works by saying heres a key, the URL, a refetch method and then everything is handled for you by React Query.
+
+The hardest part of using React is useEffect, it causes a lot of bugs and can be difficult to wrap you're head around when does it happen, when does it cascade etc.
+
+By using React Query you are going to be removing effects from your database because it will handle all your API requests for you.
+
+Try to minimise effects in your code - if there is a library that will do it for you - use that. Where you do need to use them, try to contain them to small testable areas.
+
+So to do this we are going to install:
+
+```bash
+npm i @tanstack/react-query@4.10.1
+```
+
+Next we need to go to App.jsx and instantiate the query provider by importing it:
+
+```jsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+```
+
+and create our client, which we will need to give a config - it will want to know how long to cache things. We want our cache to be as long as the user is in session, so we use Infinity as the value (this is basically saying once you fetch it, don't re-fetch it).
+
+```jsx
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    },
+  }
+})
+```
+Then inside the <BrowserRouter> we will add the following component - this component works the same was as the BrowserRouter in that it provides context whenever we do the use query:
+
+```jsx
+<QueryClientProvider client={queryClient}>
+```
+
+You may hear some people calling components like BrowserRouter and QueryClientProvider higher order components, as they don't display anything, rather they are wrapper components that provide context to the components beneath them.
+
+Finally we will create a new file called fetchPet.js which will contain the method for fetching pets. This will be called on details.jsx so that we can go and get the individual pet we're looking at. The id variable will get the pet id, the apiRes will fetch the pet for us - something perculiar to React Query is that if its an unsuccessful request, they want you to throw an error - however if you get a 500 error for example it may not throw an error and so we will add an if to say if the apiRes status is not ok then throw a new error, with the error message you would like to display. This is purely for debugging purposes, so its really helpful to give yourself a useful error message here.
+
+By adding this, React Query will be able to know that this doesn't work, and that will allow you to do things like on error etc. This is also something that you will pretty much use everytime you use React Query. After our if statement, React Query will expect you to return a promise (as async functions always return promises) and so we can return the apiRes.json as this will return a promise. Finally we will export our fetchPet. This has now created a fetch method that is ready to be used with React Query
+
 ### Uncontrolled Forms
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/uncontrolled-forms)
