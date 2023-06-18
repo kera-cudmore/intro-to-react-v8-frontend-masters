@@ -1010,6 +1010,18 @@ You can think of error boundary as the React versuib of catch in try/catch.
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/special-case-react-tools/portals-and-refs)
 
+Modals are a terrible user interface, so we should avoid using them as much as possible.
+
+Portals allow you to render to a different place from within a component. So we can do this by adding another div in our index.html file with an id of modal. This now gives us this other place in the DOM that we can render stuff into, and we can do this from within some of our deeply nested components which can sometimes be really useful.
+
+So we will create a new file Modal.jsx and import the useEffect and useRef hooks from React, and then createPortal from React-dom. The Ref is a container, which gives us back the same thing back every time. So we'll create a div and we want to have the same div each time, so it will only create the div once which will be the same div each time its rerendered. This will allow us to attach and detatch it from the DOM, and always be operating on the same div.
+
+In Functional Components, to achieve the same thing as componentWillUnmount we can use the following at the end of the useEffect `    return () => modalRoot.removeChild(elRef.current);` This allows us to clean up the div once we're finished with it as we no longer want it in the DOM and will remove the child, otherwise we would end up with an infinite amount of divs left inside the modal.
+
+This method can be used to remove something from the DOM, like the example above, to remove event listeners, to stop a timer, request animation frames or set interval.
+
+As the modal is part of the React virtual DOM rather than the normal DOM, this allows us to put an event listener further up the return and catch the events bubbling from the modal. This is something interesting, but no real reason why you would need to do this.
+
 🏁 [Project Checkpoint 13](https://github.com/btholt/citr-v8-project/tree/master/13-portals-and-refs)
 
 ### Context
