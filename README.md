@@ -996,6 +996,14 @@ We are using an arrow function for handleIndexClick, as when you invoke an arrow
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/special-case-react-tools/error-boundaries)
 
+Sometimes you can end up with errors inside of components. These can be for example, malformed API responses or user generated input, where the user is trying to put in something that causes an error. We can be defensive against things like this by using an error boundary.
+
+Your apps may not always need an error boundary, but they are really helpful. We are going to utilize componentDidCatch, which is a lifecycle method that can only be used in a class component. The error boundary code is taken from the documentation, as that is pretty much the only way to do an error boundary. Error boundaries prevent your app from crashing, as if the app hits an error, it will display a message to the user instead.
+
+If we want to check our error handling we could add `throw new Error("Hi, I'm an error!");` at the beginning of the render in the Carousel component. This should then display the error message a user would see.
+
+You can think of error boundary as the React versuib of catch in try/catch.
+
 🏁 [Project Checkpoint 12](https://github.com/btholt/citr-v8-project/tree/master/12-error-boundaries)
 
 ### Portals and Refs
