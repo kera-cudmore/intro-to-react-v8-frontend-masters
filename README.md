@@ -838,6 +838,8 @@ If we check the app, we will now see the id for whichever pet we click on, on th
 
 We will now also import Link in App.jsx as we want to add a link back to home at the top of the page. We will create a header which contains a link to home, and include the text Adopt Me! When users click on this link, they will be returned to the home page.
 
+🏁 [Project Checkpoint 8](https://github.com/btholt/citr-v8-project/tree/master/08-react-router)
+
 ### react-query
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/react-query)
@@ -940,13 +942,20 @@ React Query is configurable and allows us to set refetching of data on a query b
 
 If we wanted to post or put something to the API or DB, we would use `useMutation` rather that `useQuery` which would allow you to post to a site. Further information can be found at the [React Query Documentation](https://tanstack.com/query/v4/docs/guides/mutations).
 
+🏁 [Project Checkpoint 9](https://github.com/btholt/citr-v8-project/tree/master/09-react-query)
+
 ### Uncontrolled Forms
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/uncontrolled-forms)
 
+
+🏁 [Project Checkpoint 10](https://github.com/btholt/citr-v8-project/tree/master/10-uncontrolled-forms)
+
 ### Class Components
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/class-components)
+
+🏁 [Project Checkpoint 11](https://github.com/btholt/citr-v8-project/tree/master/11-class-components)
 
 ---
 
@@ -956,13 +965,19 @@ If we wanted to post or put something to the API or DB, we would use `useMutatio
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/special-case-react-tools/error-boundaries)
 
+🏁 [Project Checkpoint 12](https://github.com/btholt/citr-v8-project/tree/master/12-error-boundaries)
+
 ### Portals and Refs
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/special-case-react-tools/portals-and-refs)
 
+🏁 [Project Checkpoint 13](https://github.com/btholt/citr-v8-project/tree/master/13-portals-and-refs)
+
 ### Context
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/special-case-react-tools/context)
+
+🏁 [Project Checkpoint 14](https://github.com/btholt/citr-v8-project/tree/master/14-context)
 
 ---
 
