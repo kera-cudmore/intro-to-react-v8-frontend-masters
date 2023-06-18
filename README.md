@@ -966,6 +966,26 @@ We could also add a loading screen in before the return if we wanted to display 
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/class-components)
 
+Class components are a bit older and what was predominantly used before functional components were introduced.
+
+We are going to create a file called Carousel.jsx.
+
+NOTE: Class components don't mix with hooks - you can either use class components or hooks - but never both.
+
+Class components must extend the React Component (`class Carousel extends Component`) and every class component has a render function. It doesn't have to return markup, but it must be included and return something. The render function is like the function body of the components we've used up to now.
+
+The word this in class components is very important as that is how the props are passed in. Default props are used when no props are passed into the component. So if we deleted the `images={pet.images}` from the Carousel component in Details.jsx, then the defaultProps in the carousel would display the placeholder image.
+
+We can keep track of the state without hooks with the state defined in the carousel component. State is mutable so we can change the state using a function called this.setState. This is similar to useState.
+
+If we wanted to do something similar to useEffects in the FC, we can use lifecycle methods. In a class component they would use componentDidMount - this would be the same as the useEffect that had an empty array which meant it only ran once the first time it was used. componentDidMount is similar in that it only runs the first time that it mounts onto the DOM and then would never be run again. If you wanted to run it everytime something updates you would use componentDidUpdate, which would run each time the state gets updated. useEffect basically combined all the lifecycle methods into the one useEffect method. Class components aren't deprecated, so you can still write code like this, but people don't tend to anymore as they have moved to using hooks.
+
+It can be common to see projects that are a mix of class based components and hooks. Most new projects will use hooks, and there are still a few things that function components can't do, for example errors - so it is useful to know about class components.
+
+Now we are going to add some interactivity to the carousel, by changing the hero image when one of the thumbnail images is clicked.
+
+We are using an arrow function for handleIndexClick, as when you invoke an arrow function this doesn't create new scope and will capture the scope of wherever it was written, but a standard function would create new scope at the invokation of the function.
+
 🏁 [Project Checkpoint 11](https://github.com/btholt/citr-v8-project/tree/master/11-class-components)
 
 ---
