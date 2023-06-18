@@ -925,7 +925,20 @@ if(results.isError) {
 
 By default, it will try 3 times to fetch the data, before showing an error state. This is configurable.
 
+Now we'll create a fetchBreedList file, which will be very similar to fetchPet. One difference is we will add an `if(!animal) return [];` under where we declare the animal variable. This will return an empty array if there is no animal in the search query.
 
+
+Now we'll refactor useBreedList - first we'll get rid of the `useEffect`, the imports and the variables. First we'll import useEffect and the fetchBreedList. We can then define our results variable like we did in Details.
+
+```jsx
+return [results?.data?.breeds ?? [], results.status];
+```
+
+The above is ES2021 syntax, a recent feature to Javascript. So the first time that it goes to get the data its going to be a loading state, as there isn't any data in the cache - so the `?.` syntax is saying give me the results if avaiable, if not don't give me an error. The `??` means if anything on the left fails then give me an empty array. So either give me the results or an empty array.
+
+React Query is configurable and allows us to set refetching of data on a query by query basis.
+
+If we wanted to post or put something to the API or DB, we would use `useMutation` rather that `useQuery` which would allow you to post to a site. Further information can be found at the [React Query Documentation](https://tanstack.com/query/v4/docs/guides/mutations).
 
 ### Uncontrolled Forms
 
