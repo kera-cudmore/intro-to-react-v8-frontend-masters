@@ -8,6 +8,8 @@ This repository holds my coursework and notes taken whilst completing the course
 
 [Course Website](https://react-v8.holt.courses/)
 
+* To run the project in development: `npm run dev`
+
 ---
 
 ## Welcome
@@ -883,6 +885,47 @@ You may hear some people calling components like BrowserRouter and QueryClientPr
 Finally we will create a new file called fetchPet.js which will contain the method for fetching pets. This will be called on details.jsx so that we can go and get the individual pet we're looking at. The id variable will get the pet id, the apiRes will fetch the pet for us - something perculiar to React Query is that if its an unsuccessful request, they want you to throw an error - however if you get a 500 error for example it may not throw an error and so we will add an if to say if the apiRes status is not ok then throw a new error, with the error message you would like to display. This is purely for debugging purposes, so its really helpful to give yourself a useful error message here.
 
 By adding this, React Query will be able to know that this doesn't work, and that will allow you to do things like on error etc. This is also something that you will pretty much use everytime you use React Query. After our if statement, React Query will expect you to return a promise (as async functions always return promises) and so we can return the apiRes.json as this will return a promise. Finally we will export our fetchPet. This has now created a fetch method that is ready to be used with React Query
+
+Its useful to have fetchPet in its own seperate file as this makes testing a lot easier. Now we're going to go and use this in Details. First we want to import useQuery, then fetchPet. We then need to make a new variable results and that is going to have the values "details" which is what tells it what type of request it is (this could be anything, its what its stored as in the cache) and then the id. Within fetchPet, the id was given the place of 1, and that is because in this array details is in the 0 position and id in position 1. If details 1 doesn't exist in the cache it will then run fetchPet which will then get that record for you.
+
+```jsx
+const results = useQuery(["details", id], fetchPet);
+```
+
+The first time this runs there won't be anything available in the cache, so we will display a loading spinner using `isLoading`, and then as soon as fetchPet completes it will then rerender with the correct information. 
+
+After `if(results.isLoading)` we can then assume that pet has loaded and we can store the pet in a variable - `const pet = results.data.pet[0];` - this is how the data will be returned and how we can access the pet, and we can then update the return to give all the details for the pet id requested:
+
+```jsx
+return (
+    <div className="details">
+      <div>
+        <h1>{pet.name}</h1>
+        <h2>
+          {pet.animal} - {pet.breed} - {pet.city}, {pet.state}
+        </h2>
+        <button>Adopt {pet.name}</button>
+        <p>{pet.description}</p>
+      </div>
+    </div>
+  );
+```
+
+Note: Currently the button won't do anything, however we now have a more detailed page with the pets information on it 😊
+
+There are a bunch of other things that can be used other than `isLoading` - there are ones for errors (`isError`), fetched (`isFetched`), status, which will give a text which could be used in a switch statement (`status`) and refetch, which you could use to manually refetch the information from the API if you think the results could be stale to refresh it (`refetch`) to name just a few and can be a nicer way of doing things rather than using a `useEffect` as it can be more readable. You can look in the devtools Network tab and you will be able to see that once a pet has been fetched, there is no subsequent refetch, their information is taken from the cache. However when you return to the home page  you will see that the pets search is refetched each time, and that is due to the `useEffect` which will run each time regardless of whether it has run before.
+
+Note: There is no example of if the results hits an error, however with the `isError` we can do something like the code below to handle an error (placed above the if isLoading):
+
+```jsx
+if(results.isError) {
+  return <h2>There was an error - please try again</h2>;
+}
+```
+
+By default, it will try 3 times to fetch the data, before showing an error state. This is configurable.
+
+
 
 ### Uncontrolled Forms
 
