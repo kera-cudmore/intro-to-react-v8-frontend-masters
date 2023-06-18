@@ -948,6 +948,17 @@ If we wanted to post or put something to the API or DB, we would use `useMutatio
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/react-capabilities/uncontrolled-forms)
 
+There is one more place we are using a useEffect, in SearchParams. We could either get rid of it like above, or we could use an uncontrolled form. The location and animal are being tracked individually with useState and are only used when sending it to the API when we requestPet. It would be much better if we could let the browser take care of this and then just pull it out of the browser whenever we needed to submit an event.
+
+First thing we will need to do is create a fetchSearch.js file and create the async fetchSearch function. 
+
+Next we will need to update the searchParams file. We will no longer be using React to track location and breed, and instead will use the uncontrolled form. We have left animal as it was as this is also being fed into useBreedList, so its important that this is tracked and controlled via React input.
+
+We create an object from the form data which we then use in the results variable.
+
+By doing it this way with the uncontrolled forms, when you request a search that its seen before the rerender will happen almost instantly as it has cached that request as its seen it before, so rather than having to make a request from the API it uses the cache.
+
+We could also add a loading screen in before the return if we wanted to display a loader after the user searches.
 
 🏁 [Project Checkpoint 10](https://github.com/btholt/citr-v8-project/tree/master/10-uncontrolled-forms)
 
