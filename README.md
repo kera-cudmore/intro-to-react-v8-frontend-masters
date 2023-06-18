@@ -1028,6 +1028,56 @@ As the modal is part of the React virtual DOM rather than the normal DOM, this a
 
 * [Lesson Outline](https://react-v8.holt.courses/lessons/special-case-react-tools/context)
 
+Up to now we've only been using local state (also known as UI state), for example do we show the modal or not on the details page. But sometimes we have things that would be global app level state, for example a user that was logged in, every page would care about which user is logged in. 
+
+There are a number of ways to handle that - you don't have to use context, Redux, MobX etc. One way you could do it is to go into App.jsx and add `const [user, setUser] = useState(null)` and then whenever a user logs in, you could just track it underneath. You would then pass it into the Route paths: `<Route path="/details/:id" element={<Details user={user} /> } />` and then everyone would have access to the user all the time. If creating an app of a similar size to the adopt me app then this would be a valid way of achieving this. However this would no longer be the case if you had an app with 40 different pages, 39 of which care about the user.
+
+In the case above context would then become useful to you, as it is an app level, generalised state. However, be aware that you want to be really mindful about where you use your state and when you make state global. It is really useful to be able to trace back where data came from in your components and find out where it goes. So we don't want to make all state global, as using context takes state from one place and it can be hard to find where it came from, where it was modified and where the bugs are. So our example above of a user is a valid use for context, but if you have two pages that care about theme, it would be better to pass that with normal state using props and children etc.
+
+So we'll start by creating an AdoptedPetContext.js file:
+
+```js
+import { createContext } from "react";
+
+const AdoptedPetContext = createContext();
+
+export default AdoptedPetContext;
+```
+
+We'll then make use of the context in App.jsx and this will make adopted pet available to the details and search params whenever they want.
+
+Context is not read-only, as we are passing the whole hook, each of the components have access to the value, and also the method to update the value. So the context is read and write, although the context provider doesn't care.
+
+In Details.jsx we will then import the AdoptedPetContext along with useContext from React and useNavigate from react-router-dom. We will then create a variable navigate: `const navigate = useNavigate();` this is a function that will allow us to programatically reroute someone somewhere. We will use it to reroute a user to the homepage if they click yes to adopt.
+
+Next we will add `const [_, setAdoptedPet] = useContext(AdoptedPetContext);` As we don't care about the first value we use the _.
+
+Finally on the yes button for adopting, we will add an onClick which will set the adopted pet in our context to the value of the current pet, and then navigate to the home page.
+
+```jsx
+<button
+  onClick={() => {
+    setAdoptedPet(pet);
+    navigate("/");
+  }}
+>
+  Yes
+</button>
+```
+
+Next we will go to our SearchParams.jsx file and import useContext and AdoptedPetContext and then we will add the following under our breeds variable `const [adoptedPet] = useContext(AdoptedPetContext);` and then in the form we will add the following:
+
+```jsx
+{
+  adoptedPet ? (
+    <div className="pet image-container">
+      <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
+    </div>
+  ) : null}
+```
+
+This piece of code will create the code if adoptedpet exists to show the adopted pets image above the search, otherwise it will return null and display nothing.
+
 🏁 [Project Checkpoint 14](https://github.com/btholt/citr-v8-project/tree/master/14-context)
 
 ---
